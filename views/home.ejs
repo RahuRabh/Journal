@@ -3,9 +3,9 @@
         <h1 style="color: rgb(118, 202, 70);">Home</h1>
         <p><%= StartingContent %></p>
 
-        <% if (journalPost.length > 0) { %>
+        <% if (journalPosts.length > 0) { %>
             <hr>
-            <% journalPost.forEach((post) => { %>
+            <% journalPosts.forEach((post) => { %>
                 <h1><%= post.title %></h1>
                 <p>
                     <%= post.content.substring(0, 100) + " " %>

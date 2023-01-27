@@ -8,7 +8,7 @@
             <%= content %>
         </p>
         <form action="/delete" method="post">
-            <button class="btn btn-warning float-right" type="submit" name="deleteButton" value="<%=id%>">Delete
+            <button class="btn btn-warning float-right" type="submit" name="deleteButton" value="<%= title %>">Delete
                 Post</button>
         </form>
         <% } else { %>
