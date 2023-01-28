@@ -27,45 +27,20 @@ const postSchema = new mongoose.Schema({
 //////////Creating Mongoose Model
 const Post = new mongoose.model("Post", postSchema);
 
-app.get("/", function(req, res){
-  Post.find({}, function(err, foundPosts){
+app.get("/", (req, res) => {
+  Post.find({}, (err, foundPosts) => {
       res.render("home", 
     { StartingContent : homeStartingContent,
       journalPosts : foundPosts });
   });
 });
 
-app.get("/compose", function(req, res){
+app.get("/compose", (req, res) => {
   res.render("compose");
 })
 
-// app.get("/posts/:postId", function(req, res){
-//   const requestedPostId = req.params.postId;
-
-//   // Post.findById(requestedPostId, function(err, result){
-//   //   res.render("post", {singlePostTitle: result.title, singlePostBody: result.content});
-//   // });
-//   //_id:
-//   Post.findOne({_id: requestedPostId}, function(err, foundPost){
-//     if(err){
-//       res.render("post",
-//       {
-//         title: foundPost.title,
-//         content: foundPost.content,
-//       });
-//     } else {
-//       console.log(err);
-//       res.render("post", {title: "Not Found", commit: ""});
-//     }
-   
-//   });
-// });
-
 app.get("/posts/:postId", (req, res, next) => {
-
   const requestedPostId = req.params.postId;
-  // console.log("postId is:", '"' + requestedPostId + '"');
-   
       Post.findOne({_id: requestedPostId}, (err, post) => {
         res.render("post", {
           title: post.title,
@@ -74,12 +49,12 @@ app.get("/posts/:postId", (req, res, next) => {
       });
     });
 
-app.post("/compose", function(req, res){
+app.post("/compose", (req, res) => {
   const post = new Post ({
     title : req.body.postTitle,
     content : req.body.postBody
   });
-  post.save(function(err){
+  post.save(err => {
     if(!err){
       res.redirect('/');
     } else {
@@ -89,12 +64,10 @@ app.post("/compose", function(req, res){
 });
 
 app.post("/delete", (req, res) => {
-  // Get id of post to be deleted from request body (passed from post.ejs btn)
-  const requestedId = req.body.deleteButton;
-  // Search database for post and delete; redirect to home route
-  Post.findByIdAndDelete({_id: requestedId}, (err) => {
+  const deletePost = req.body.deleteButton;
+  // Search database for post and delete; redirect to home route findByIdAndDelete
+  Post.findOneAndRemove({title: deletePost}, (err) => {
       if (!err) {
-          // console.log("Blog post successfully deleted!");
           res.redirect("/");
       } else {
           console.log(err);
@@ -102,15 +75,30 @@ app.post("/delete", (req, res) => {
   });
 });
 
-app.get("/contact", function(req, res){
+// app.post("/delete", function (req, res) {
+//   const deletedPost = req.body.deletedPost;
+//   console.log(deletedPost);
+//   Post.deleteOne({ _id: deletedPost }, function (err) {
+//     if (!err) {
+//       res.redirect("/posts");
+//     } else {
+//       console.log(err);
+//     }
+//   });
+// });
+
+app.get("/contact", (req, res) => {
   res.render("contact", { thirdcontent : contactContent});
 })
 
-app.get("/about", function(req, res){
+app.get("/about", (req, res) => {
   res.render("about", { secondcontent : aboutContent});
 })
 
-const PORT = process.env.PORT || 3030;
-app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
+let port = process.env.PORT;
+if (port == null || port == "") {
+    port = 3000;
+}
+app.listen(port, () => {
+  console.log(`server started on port ${port}`);
 });
