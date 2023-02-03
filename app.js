@@ -75,18 +75,6 @@ app.post("/delete", (req, res) => {
   });
 });
 
-// app.post("/delete", function (req, res) {
-//   const deletedPost = req.body.deletedPost;
-//   console.log(deletedPost);
-//   Post.deleteOne({ _id: deletedPost }, function (err) {
-//     if (!err) {
-//       res.redirect("/posts");
-//     } else {
-//       console.log(err);
-//     }
-//   });
-// });
-
 app.get("/contact", (req, res) => {
   res.render("contact", { thirdcontent : contactContent});
 })
